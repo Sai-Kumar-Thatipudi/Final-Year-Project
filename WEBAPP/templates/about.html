@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Crop Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/crop1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        header {
+            background-color: #4CAF50;
+            padding: 15px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white;
+            margin-left: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease;
+            margin-right: 25px;
+        }
+
+        nav a:hover {
+            color: #ddd;
+            transform: scale(1.1);
+        }
+
+        .about-container {
+            max-width: 1000px;
+            margin: 100px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .about-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .about-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-section {
+            margin-top: 50px;
+        }
+
+        .team-heading {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .team-members {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: nowrap;
+        }
+
+        .team-member {
+            text-align: center;
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 200px;
+        }
+
+        .team-member:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-member h3 {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">Crop Recommendation System</div>
+            <nav>
+                <a href="/index">Home</a>
+                <a href="/about">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="about-container">
+        <h1>About Our System</h1>
+        <p>The Smart Agriculture Prediction System is an AI-powered solution designed to assist farmers and investors in making informed decisions about crop selection and yield prediction. By leveraging machine learning, this system provides accurate insights based on soil quality, climate conditions, and historical agricultural data.<br/>
+         Features<br/>
+          Crop Recommendation for Farmers<br/>
+          Selecting the right crop is essential for maximizing productivity. This system analyzes key factors such as soil nutrients, temperature, humidity, rainfall, and pH levels to recommend the most suitable crop. Using a K-Nearest Neighbors (KNN) algorithm, the system ensures that farmers receive scientifically backed recommendations tailored to their specific land conditions.</p>
+        <img src="{{ url_for('static', filename='Aboutsystem.jpg') }}" alt="About Us" class="about-image">
+        
+        <div class="team-section">
+            <h2 class="team-heading">Our Team</h2>
+            <div class="team-members">
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='person1.jpg') }}" alt="Team Member 1">
+                    <h3>Sai Kishore</h3>
+                    <p></p>
+                </div>
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='person2.jpg') }}" alt="Team Member 2">
+                    <h3>Yaseen</h3>
+                    <p></p>
+                </div>
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='person3.jpg') }}" alt="Team Member 3">
+                    <h3>Karthik</h3>
+                    <p></p>
+                </div>
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='person4.jpg') }}" alt="Team Member 4">
+                    <h3>Sai Kumar</h3>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

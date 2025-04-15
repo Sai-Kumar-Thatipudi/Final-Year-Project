@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Yield Prediction Result</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #f9c66d, #ff6347);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .result {
+            font-size: 22px;
+            font-weight: 600;
+            color: #ff6347;
+            margin: 10px 0;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .links {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Crop Yield Prediction Result</h1>
+        <p>Predicted Crop Yield:</p>
+        <div class="result">
+            {{ result }} tons
+        </div>
+
+        <div class="links">
+            <a href="/yield_prediction">Go Back</a> | <a href="/index">Back to Home</a>
+        </div>
+    </div>
+
+</body>
+</html>

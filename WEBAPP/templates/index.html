@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agriculture Prediction System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url("{{ url_for('static', filename='crop1.jpg') }}") no-repeat center center/cover;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Dark overlay for better text visibility */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 40px;
+            width: 420px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #2C3E50;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 17px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button {
+            background: linear-gradient(to right, #28a745, #4CAF50);
+            color: white;
+            padding: 14px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 255, 127, 0.4);
+        }
+
+        .button i {
+            font-size: 20px;
+        }
+
+        .button:active {
+            background: #218838;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🌱 Welcome to the Agriculture Prediction System</h1>
+        <p>Discover the best crop to grow and maximize your yield with our AI-powered predictions!</p>
+
+        <div class="button-container">
+            <a href="/crop_recommendation" class="button">
+                <i class="fas fa-seedling"></i> Farmer: Crop Recommendation
+            </a>
+            <a href="/yield_prediction" class="button">
+                <i class="fas fa-chart-line"></i> Investor: Crop Yield Prediction
+            </a>
+        </div>
+    </div>
+</body>
+</html>

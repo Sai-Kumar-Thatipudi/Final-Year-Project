@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .crop-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            transition: grid-template-columns 0.3s ease;
+        }
+
+        .crop-item {
+            position: relative;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            background-color: #ffffff;
+        }
+
+        .crop-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .crop-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .crop-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background-color: #f0f0f0;
+        }
+
+        .crop-item p {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Crop Description Popup */
+.crop-description {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Darker overlay */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out, transform 0.5s ease-in-out;
+}
+
+/* Show crop description when active */
+.crop-description.show {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Description Content Box */
+.description-content {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 600px;
+    width: 85%;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    overflow-y: auto;
+    max-height: 80vh;
+    transform: scale(0.9);
+    animation: zoomIn 0.5s ease-out forwards;
+    transition: transform 0.4s ease;
+}
+
+/* Zoom In Animation */
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Header Styling */
+.description-content h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #4CAF50;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Paragraph Styling */
+.description-content p {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.8;
+    text-align: left;
+    max-width: 95%;
+    margin-bottom: 30px;
+    animation: fadeIn 0.7s ease-in-out;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 26px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Close Button Hover Effect */
+.close-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.1);
+}
+
+/* Close Button Focus Effect */
+.close-btn:focus {
+    outline: none;
+}
+
+/* Close Button Active Effect */
+.close-btn:active {
+    transform: scale(1.05);
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Subtle Shadow Hover Effect on Crop Item */
+.crop-item:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Smooth transition on crop-item */
+.crop-item {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Button styles for crops (if needed) */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Fade-In Effect for the Descriptions */
+.crop-description .description-content h2,
+.crop-description .description-content p {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Pop-out Effect for Crop Description on Close */
+@keyframes popOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.crop-description.hide {
+    animation: popOut 0.3s ease-in-out forwards;
+}
+
+
+        /* Animations */
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.9);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Crop Recommendation</h1>
+    <p>Click on a crop to view its description</p>
+</header>
+
+<div class="crop-list">
+    <!-- Crop 1 -->
+    <div class="crop-item" onclick="showDescription(1)">
+        <img src="{{ url_for('static', filename='Rice.jpg') }}" alt="Rice">
+        <p>Rice</p>
+    </div>
+    <!-- Crop 2 -->
+    <div class="crop-item" onclick="showDescription(2)">
+        <img src="{{ url_for('static', filename='Maize.jpg') }}" alt="Maize">
+        <p>Maize</p>
+    </div>
+    <!-- Crop 3 -->
+    <div class="crop-item" onclick="showDescription(3)">
+        <img src="{{ url_for('static', filename='Jute.jpg') }}" alt="Jute">
+        <p>Jute</p>
+    </div>
+    <!-- Crop 4 -->
+    <div class="crop-item" onclick="showDescription(4)">
+        <img src="{{ url_for('static', filename='Cotton.jpeg') }}" alt="Cotton">
+        <p>Cotton</p>
+    </div>
+    <!-- Crop 5 -->
+    <div class="crop-item" onclick="showDescription(5)">
+        <img src="{{ url_for('static', filename='Coconut.jpeg') }}" alt="Coconut">
+        <p>Coconut</p>
+    </div>
+    <!-- Crop 6 -->
+    <div class="crop-item" onclick="showDescription(6)">
+        <img src="{{ url_for('static', filename='Papaya.jpg') }}" alt="Papaya">
+        <p>Papaya</p>
+    </div>
+    <!-- Crop 7 -->
+    <div class="crop-item" onclick="showDescription(7)">
+        <img src="{{ url_for('static', filename='Orange.jpeg') }}" alt="Orange">
+        <p>Orange</p>
+    </div>
+    <!-- Crop 8 -->
+    <div class="crop-item" onclick="showDescription(8)">
+        <img src="{{ url_for('static', filename='Apple.jpeg') }}" alt="Apple">
+        <p>Apple</p>
+    </div>
+    <!-- Crop 9 -->
+    <div class="crop-item" onclick="showDescription(9)">
+        <img src="{{ url_for('static', filename='Muskmelon.jpg') }}" alt="Muskmelon">
+        <p>Muskmelon</p>
+    </div>
+    <!-- Crop 10 -->
+    <div class="crop-item" onclick="showDescription(10)">
+        <img src="{{ url_for('static', filename='Watermelon.jpg') }}" alt="Watermelon">
+        <p>Watermelon</p>
+    </div>
+    <!-- Crop 11 -->
+    <div class="crop-item" onclick="showDescription(11)">
+        <img src="{{ url_for('static', filename='Grapes.jpeg') }}" alt="Grapes">
+        <p>Grapes</p>
+    </div>
+    <!-- Crop 12 -->
+    <div class="crop-item" onclick="showDescription(12)">
+        <img src="{{ url_for('static', filename='Mango.jpeg') }}" alt="Mango">
+        <p>Mango</p>
+    </div>
+    <!-- Crop 13 -->
+    <div class="crop-item" onclick="showDescription(13)">
+        <img src="{{ url_for('static', filename='Banana.jpeg') }}" alt="Banana">
+        <p>Banana</p>
+    </div>
+    <!-- Crop 14 -->
+    <div class="crop-item" onclick="showDescription(14)">
+        <img src="{{ url_for('static', filename='Pomegranate.jpg') }}" alt="Pomegranate">
+        <p>Pomegranate</p>
+    </div>
+    <!-- Crop 15 -->
+    <div class="crop-item" onclick="showDescription(15)">
+        <img src="{{ url_for('static', filename='Lentil.jpeg') }}" alt="Lentil">
+        <p>Lentil</p>
+    </div>
+    <!-- Crop 16 -->
+    <div class="crop-item" onclick="showDescription(16)">
+        <img src="{{ url_for('static', filename='Blackgram.jpg') }}" alt="Blackgram">
+        <p>Blackgram</p>
+    </div>
+    <!-- Crop 17 -->
+    <div class="crop-item" onclick="showDescription(17)">
+        <img src="{{ url_for('static', filename='Mungbean.jpeg') }}" alt="Mungbean">
+        <p>Mungbean</p>
+    </div>
+    <!-- Crop 18 -->
+    <div class="crop-item" onclick="showDescription(18)">
+        <img src="{{ url_for('static', filename='Mothbean.jpeg') }}" alt="Mothbeans">
+        <p>Mothbeans</p>
+    </div>
+    <!-- Crop 19 -->
+    <div class="crop-item" onclick="showDescription(19)">
+        <img src="{{ url_for('static', filename='Pigeonpeas.jpeg') }}" alt="Pigeonpeas">
+        <p>Pigeonpeas</p>
+    </div>
+    <!-- Crop 20 -->
+    <div class="crop-item" onclick="showDescription(20)">
+        <img src="{{ url_for('static', filename='Kidneybeans.jpeg') }}" alt="Kidneybeans">
+        <p>Kidneybeans</p>
+    </div>
+</div>
+
+<!-- Crop Descriptions -->
+<!-- Crop 1: Rice -->
+<div id="crop-description-1" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Rice</h2>
+        <p>Rice requires a warm climate and is typically grown in areas with temperatures between 25°C and 35°C. It needs well-irrigated, fertile, and pH-neutral soils.</p>
+    </div>
+</div>
+
+<!-- Crop 2: Maize -->
+<div id="crop-description-2" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Maize</h2>
+        <p>Maize, also known as corn, thrives in regions with warm temperatures. It requires a well-drained, fertile soil for optimal growth and a steady rainfall pattern.</p>
+    </div>
+</div>
+
+<!-- Crop 3: Jute -->
+<div id="crop-description-3" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Jute</h2>
+        <p>Jute is a warm-weather crop and grows best in regions with high humidity. It requires soil that is rich in nutrients and well-drained, with plenty of sunlight.</p>
+    </div>
+</div>
+
+<!-- Crop 4: Cotton -->
+<div id="crop-description-4" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Cotton</h2>
+        <p>Cotton thrives in dry, warm climates. It requires well-drained, fertile soil with a neutral pH and consistent rainfall during the growing season.</p>
+    </div>
+</div>
+
+<!-- Crop 5: Coconut -->
+<div id="crop-description-5" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Coconut</h2>
+        <p>Coconut trees prefer tropical and subtropical climates. They need well-drained sandy soils and high humidity with rainfall distributed evenly throughout the year.</p>
+    </div>
+</div>
+
+<!-- Crop 6: Papaya -->
+<div id="crop-description-6" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Papaya</h2>
+        <p>Papaya is a tropical fruit that requires a warm climate and well-drained sandy soils. It grows best with regular rainfall and plenty of sunlight.</p>
+    </div>
+</div>
+
+<!-- Crop 7: Orange -->
+<div id="crop-description-7" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Orange</h2>
+        <p>Oranges require a warm, subtropical to tropical climate. They grow best in well-drained, sandy loam soils with regular rainfall or irrigation.</p>
+    </div>
+</div>
+
+<!-- Crop 8: Apple -->
+<div id="crop-description-8" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Apple</h2>
+        <p>Apple trees thrive in temperate climates with cool winters. They require well-drained soils and benefit from a period of dormancy during winter to produce high-quality fruit.</p>
+    </div>
+</div>
+
+<!-- Crop 9: Muskmelon -->
+<div id="crop-description-9" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Muskmelon</h2>
+        <p>Muskmelon requires warm temperatures and plenty of sunlight. It grows best in sandy loam soils that are well-drained, with a consistent supply of water during the growing season.</p>
+    </div>
+</div>
+
+<!-- Crop 10: Watermelon -->
+<div id="crop-description-10" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Watermelon</h2>
+        <p>Watermelon requires warm temperatures, with a preference for well-drained, sandy soils. It thrives in areas with abundant sunlight and requires consistent moisture during the growing season.</p>
+    </div>
+</div>
+
+<!-- Crop 11: Grapes -->
+<div id="crop-description-11" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Grapes</h2>
+        <p>Grapes grow best in areas with a Mediterranean climate, featuring hot summers and cool winters. They prefer well-drained soils and require sufficient sunlight and warmth to ripen properly.</p>
+    </div>
+</div>
+
+<!-- Crop 12: Mango -->
+<div id="crop-description-12" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Mango</h2>
+        <p>Mango trees thrive in tropical climates with high temperatures and humidity. They prefer well-drained, slightly acidic soil and benefit from dry periods before fruiting.</p>
+    </div>
+</div>
+
+<!-- Crop 13: Banana -->
+<div id="crop-description-13" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Banana</h2>
+        <p>Bananas require a warm, tropical climate with high humidity. They prefer well-drained, fertile soils rich in organic matter and need ample water for growth.</p>
+    </div>
+</div>
+
+<!-- Crop 14: Pomegranate -->
+<div id="crop-description-14" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Pomegranate</h2>
+        <p>Pomegranates thrive in arid and semi-arid regions with a warm climate. They prefer well-drained soils and benefit from full sunlight and moderate irrigation.</p>
+    </div>
+</div>
+
+<!-- Crop 15: Lentil -->
+<div id="crop-description-15" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Lentil</h2>
+        <p>Lentils grow best in cool climates with well-drained, loamy soil. They require moderate rainfall and are often cultivated in regions with a dry season for harvesting.</p>
+    </div>
+</div>
+
+<!-- Crop 16: Blackgram -->
+<div id="crop-description-16" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Blackgram</h2>
+        <p>Blackgram thrives in well-drained, fertile soils with a warm climate. It is drought-resistant and grows best in areas with moderate rainfall during the growing period.</p>
+    </div>
+</div>
+
+<!-- Crop 17: Mungbean -->
+<div id="crop-description-17" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Mungbean</h2>
+        <p>Mungbean is a warm-season crop that requires well-drained, fertile soils. It grows well in areas with moderate rainfall and can tolerate drought conditions once established.</p>
+    </div>
+</div>
+
+<!-- Crop 18: Mothbeans -->
+<div id="crop-description-18" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Mothbeans</h2>
+        <p>Mothbeans grow best in arid and semi-arid regions with warm temperatures. They require sandy, well-drained soils and are known for their drought tolerance.</p>
+    </div>
+</div>
+
+<!-- Crop 19: Pigeonpeas -->
+<div id="crop-description-19" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Pigeonpeas</h2>
+        <p>Pigeonpeas thrive in warm, tropical climates. They require well-drained soils and benefit from moderate rainfall and full sunlight throughout the growing period.</p>
+    </div>
+</div>
+
+<!-- Crop 20: Kidneybeans -->
+<div id="crop-description-20" class="crop-description">
+    <div class="description-content">
+        <button class="close-btn" onclick="closeDescription()">×</button>
+        <h2>Kidneybeans</h2>
+        <p>Kidneybeans grow best in warm climates with well-drained, loamy soil. They require moderate rainfall during the growing period and prefer sunny weather for healthy yields.</p>
+    </div>
+</div>
+
+<script>
+    function showDescription(cropNumber) {
+        document.getElementById('crop-description-' + cropNumber).classList.add('show');
+    }
+
+    function closeDescription() {
+        const descriptions = document.querySelectorAll('.crop-description');
+        descriptions.forEach(function(description) {
+            description.classList.remove('show');
+        });
+    }
+</script>
+
+</body>
+</html>
